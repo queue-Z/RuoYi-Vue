@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.unidom.indices.mapper.TUdsIndiceConfMapper">
+
+    <resultMap type="TUdsIndiceConf" id="TUdsIndiceConfResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="moduleId"    column="module_id"    />
+        <result property="indiceName"    column="indice_name"    />
+        <result property="moduleIndiceAlias"    column="module_indice_alias"    />
+        <result property="globalIndiceAlias"    column="global_indice_alias"    />
+        <result property="indiceSettings"    column="indice_settings"    />
+        <result property="indiceMappings"    column="indice_mappings"    />
+        <result property="confInfo"    column="conf_info"    />
+        <result property="indiceStatus"    column="indice_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="isDelete"    column="is_delete"    />
+
+        <association property="moduleDef" resultMap="com.ruoyi.unidom.indices.mapper.TUdsModuleDefMapper.TUdsModuleDefResult" />
+    </resultMap>
+
+    <sql id="selectTUdsIndiceConfVo"> select ic.*,md.* from t_uds_indice_conf ic left join t_uds_module_def md on ic.module_id = md.id
+    </sql>
+
+    <select id="selectTUdsIndiceConfList" parameterType="TUdsIndiceConf" resultMap="TUdsIndiceConfResult">
+        <include refid="selectTUdsIndiceConfVo"/>
+        <where>  
+            <if test="userId != null "> and ic.user_id = #{userId}</if>
+            <if test="moduleId != null "> and ic.module_id = #{moduleId}</if>
+            <if test="indiceName != null  and indiceName != ''"> and ic.indice_name like concat('%', #{indiceName}, '%')</if>
+            <if test="moduleIndiceAlias != null  and moduleIndiceAlias != ''"> and ic.module_indice_alias = #{moduleIndiceAlias}</if>
+            <if test="globalIndiceAlias != null  and globalIndiceAlias != ''"> and ic.global_indice_alias = #{globalIndiceAlias}</if>
+            <if test="indiceSettings != null  and indiceSettings != ''"> and ic.indice_settings = #{indiceSettings}</if>
+            <if test="indiceMappings != null  and indiceMappings != ''"> and ic.indice_mappings = #{indiceMappings}</if>
+            <if test="confInfo != null  and confInfo != ''"> and ic.conf_info = #{confInfo}</if>
+            <if test="indiceStatus != null "> and ic.indice_status = #{indiceStatus}</if>
+            <if test="isDelete != null "> and ic.is_delete = #{isDelete}</if>
+            <if test="moduleDef != null and moduleDef.moduleCode != null "> and md.module_code = #{moduleCode}</if>
+            <if test="moduleDef != null and moduleDef.moduleName != null "> and md.module_name = #{moduleName}</if>
+        </where>
+    </select>
+    
+    <select id="selectTUdsIndiceConfById" parameterType="Long" resultMap="TUdsIndiceConfResult">
+        <include refid="selectTUdsIndiceConfVo"/>
+        where ic.id = #{id}
+    </select>
+        
+    <insert id="insertTUdsIndiceConf" parameterType="TUdsIndiceConf">
+        insert into t_uds_indice_conf
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="moduleId != null">module_id,</if>
+            <if test="indiceName != null and indiceName != ''">indice_name,</if>
+            <if test="moduleIndiceAlias != null and moduleIndiceAlias != ''">module_indice_alias,</if>
+            <if test="globalIndiceAlias != null and globalIndiceAlias != ''">global_indice_alias,</if>
+            <if test="indiceSettings != null and indiceSettings != ''">indice_settings,</if>
+            <if test="indiceMappings != null and indiceMappings != ''">indice_mappings,</if>
+            <if test="confInfo != null and confInfo != ''">conf_info,</if>
+            <if test="indiceStatus != null">indice_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="isDelete != null">is_delete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="moduleId != null">#{moduleId},</if>
+            <if test="indiceName != null and indiceName != ''">#{indiceName},</if>
+            <if test="moduleIndiceAlias != null and moduleIndiceAlias != ''">#{moduleIndiceAlias},</if>
+            <if test="globalIndiceAlias != null and globalIndiceAlias != ''">#{globalIndiceAlias},</if>
+            <if test="indiceSettings != null and indiceSettings != ''">#{indiceSettings},</if>
+            <if test="indiceMappings != null and indiceMappings != ''">#{indiceMappings},</if>
+            <if test="confInfo != null and confInfo != ''">#{confInfo},</if>
+            <if test="indiceStatus != null">#{indiceStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTUdsIndiceConf" parameterType="TUdsIndiceConf">
+        update t_uds_indice_conf
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="moduleId != null">module_id = #{moduleId},</if>
+            <if test="indiceName != null and indiceName != ''">indice_name = #{indiceName},</if>
+            <if test="moduleIndiceAlias != null and moduleIndiceAlias != ''">module_indice_alias = #{moduleIndiceAlias},</if>
+            <if test="globalIndiceAlias != null and globalIndiceAlias != ''">global_indice_alias = #{globalIndiceAlias},</if>
+            <if test="indiceSettings != null and indiceSettings != ''">indice_settings = #{indiceSettings},</if>
+            <if test="indiceMappings != null and indiceMappings != ''">indice_mappings = #{indiceMappings},</if>
+            <if test="confInfo != null and confInfo != ''">conf_info = #{confInfo},</if>
+            <if test="indiceStatus != null">indice_status = #{indiceStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTUdsIndiceConfById" parameterType="Long">
+        delete from t_uds_indice_conf where id = #{id}
+    </delete>
+
+    <delete id="deleteTUdsIndiceConfByIds" parameterType="String">
+        delete from t_uds_indice_conf where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

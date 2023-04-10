@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.unidom.indices.mapper.TUdsModuleFieldMapper">
+    
+    <resultMap type="TUdsModuleField" id="TUdsModuleFieldResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="moduleId"    column="module_id"    />
+        <result property="fieldType"    column="field_type"    />
+        <result property="fieldName"    column="field_name"    />
+        <result property="fulltextFlag"    column="fulltext_flag"    />
+        <result property="searchType"    column="search_type"    />
+        <result property="fieldClass"    column="field_class"    />
+        <result property="fieldDesc"    column="field_desc"    />
+        <result property="orderbyFlag"    column="orderby_flag"    />
+        <result property="listFlag"    column="list_flag"    />
+        <result property="listSort"    column="list_sort"    />
+        <result property="dtlFlag"    column="dtl_flag"    />
+        <result property="dtlSort"    column="dtl_sort"    />
+        <result property="condFlag"    column="cond_flag"    />
+        <result property="condSort"    column="cond_sort"    />
+        <result property="condFormat"    column="cond_format"    />
+        <result property="condTable"    column="cond_table"    />
+        <result property="condSysTypeCode"    column="cond_sys_type_code"    />
+        <result property="cnPinyinMixFlag"    column="cn_pinyin_mix_flag"    />
+        <result property="hightlightFlag"    column="hightlight_flag"    />
+        <result property="maskFlag"    column="mask_flag"    />
+        <result property="maskRule"    column="mask_rule"    />
+        <result property="origTable"    column="orig_table"    />
+        <result property="origField"    column="orig_field"    />
+        <result property="confInfo"    column="conf_info"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="fieldBoost"    column="field_boost"    />
+    </resultMap>
+
+    <sql id="selectTUdsModuleFieldVo">
+        select id, user_id, module_id, field_type, field_name, fulltext_flag, search_type, field_class, field_desc, orderby_flag, list_flag, list_sort, dtl_flag, dtl_sort, cond_flag, cond_sort, cond_format, cond_table, cond_sys_type_code, cn_pinyin_mix_flag, hightlight_flag, mask_flag, mask_rule, orig_table, orig_field, conf_info, create_time, update_time, remark, create_by, update_by, is_delete, field_boost from t_uds_module_field
+    </sql>
+
+    <select id="selectTUdsModuleFieldList" parameterType="TUdsModuleField" resultMap="TUdsModuleFieldResult">
+        <include refid="selectTUdsModuleFieldVo"/>
+        <where>  
+            <if test="moduleId != null "> and module_id = #{moduleId}</if>
+            <if test="fieldName != null  and fieldName != ''"> and field_name like concat('%', #{fieldName}, '%')</if>
+            <if test="fieldDesc != null  and fieldDesc != ''"> and field_desc like concat('%', #{fieldDesc}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTUdsModuleFieldById" parameterType="Long" resultMap="TUdsModuleFieldResult">
+        <include refid="selectTUdsModuleFieldVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTUdsModuleField" parameterType="TUdsModuleField" useGeneratedKeys="true" keyProperty="id">
+        insert into t_uds_module_field
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="moduleId != null">module_id,</if>
+            <if test="fieldType != null and fieldType != ''">field_type,</if>
+            <if test="fieldName != null and fieldName != ''">field_name,</if>
+            <if test="fulltextFlag != null">fulltext_flag,</if>
+            <if test="searchType != null and searchType != ''">search_type,</if>
+            <if test="fieldClass != null">field_class,</if>
+            <if test="fieldDesc != null and fieldDesc != ''">field_desc,</if>
+            <if test="orderbyFlag != null">orderby_flag,</if>
+            <if test="listFlag != null">list_flag,</if>
+            <if test="listSort != null">list_sort,</if>
+            <if test="dtlFlag != null">dtl_flag,</if>
+            <if test="dtlSort != null">dtl_sort,</if>
+            <if test="condFlag != null">cond_flag,</if>
+            <if test="condSort != null">cond_sort,</if>
+            <if test="condFormat != null">cond_format,</if>
+            <if test="condTable != null">cond_table,</if>
+            <if test="condSysTypeCode != null">cond_sys_type_code,</if>
+            <if test="cnPinyinMixFlag != null">cn_pinyin_mix_flag,</if>
+            <if test="hightlightFlag != null">hightlight_flag,</if>
+            <if test="maskFlag != null">mask_flag,</if>
+            <if test="maskRule != null">mask_rule,</if>
+            <if test="origTable != null">orig_table,</if>
+            <if test="origField != null">orig_field,</if>
+            <if test="confInfo != null">conf_info,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="fieldBoost != null">field_boost,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="moduleId != null">#{moduleId},</if>
+            <if test="fieldType != null and fieldType != ''">#{fieldType},</if>
+            <if test="fieldName != null and fieldName != ''">#{fieldName},</if>
+            <if test="fulltextFlag != null">#{fulltextFlag},</if>
+            <if test="searchType != null and searchType != ''">#{searchType},</if>
+            <if test="fieldClass != null">#{fieldClass},</if>
+            <if test="fieldDesc != null and fieldDesc != ''">#{fieldDesc},</if>
+            <if test="orderbyFlag != null">#{orderbyFlag},</if>
+            <if test="listFlag != null">#{listFlag},</if>
+            <if test="listSort != null">#{listSort},</if>
+            <if test="dtlFlag != null">#{dtlFlag},</if>
+            <if test="dtlSort != null">#{dtlSort},</if>
+            <if test="condFlag != null">#{condFlag},</if>
+            <if test="condSort != null">#{condSort},</if>
+            <if test="condFormat != null">#{condFormat},</if>
+            <if test="condTable != null">#{condTable},</if>
+            <if test="condSysTypeCode != null">#{condSysTypeCode},</if>
+            <if test="cnPinyinMixFlag != null">#{cnPinyinMixFlag},</if>
+            <if test="hightlightFlag != null">#{hightlightFlag},</if>
+            <if test="maskFlag != null">#{maskFlag},</if>
+            <if test="maskRule != null">#{maskRule},</if>
+            <if test="origTable != null">#{origTable},</if>
+            <if test="origField != null">#{origField},</if>
+            <if test="confInfo != null">#{confInfo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="fieldBoost != null">#{fieldBoost},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTUdsModuleField" parameterType="TUdsModuleField">
+        update t_uds_module_field
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="moduleId != null">module_id = #{moduleId},</if>
+            <if test="fieldType != null and fieldType != ''">field_type = #{fieldType},</if>
+            <if test="fieldName != null and fieldName != ''">field_name = #{fieldName},</if>
+            <if test="fulltextFlag != null">fulltext_flag = #{fulltextFlag},</if>
+            <if test="searchType != null and searchType != ''">search_type = #{searchType},</if>
+            <if test="fieldClass != null">field_class = #{fieldClass},</if>
+            <if test="fieldDesc != null and fieldDesc != ''">field_desc = #{fieldDesc},</if>
+            <if test="orderbyFlag != null">orderby_flag = #{orderbyFlag},</if>
+            <if test="listFlag != null">list_flag = #{listFlag},</if>
+            <if test="listSort != null">list_sort = #{listSort},</if>
+            <if test="dtlFlag != null">dtl_flag = #{dtlFlag},</if>
+            <if test="dtlSort != null">dtl_sort = #{dtlSort},</if>
+            <if test="condFlag != null">cond_flag = #{condFlag},</if>
+            <if test="condSort != null">cond_sort = #{condSort},</if>
+            <if test="condFormat != null">cond_format = #{condFormat},</if>
+            <if test="condTable != null">cond_table = #{condTable},</if>
+            <if test="condSysTypeCode != null">cond_sys_type_code = #{condSysTypeCode},</if>
+            <if test="cnPinyinMixFlag != null">cn_pinyin_mix_flag = #{cnPinyinMixFlag},</if>
+            <if test="hightlightFlag != null">hightlight_flag = #{hightlightFlag},</if>
+            <if test="maskFlag != null">mask_flag = #{maskFlag},</if>
+            <if test="maskRule != null">mask_rule = #{maskRule},</if>
+            <if test="origTable != null">orig_table = #{origTable},</if>
+            <if test="origField != null">orig_field = #{origField},</if>
+            <if test="confInfo != null">conf_info = #{confInfo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="fieldBoost != null">field_boost = #{fieldBoost},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTUdsModuleFieldById" parameterType="Long">
+        delete from t_uds_module_field where id = #{id}
+    </delete>
+
+    <delete id="deleteTUdsModuleFieldByIds" parameterType="String">
+        delete from t_uds_module_field where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

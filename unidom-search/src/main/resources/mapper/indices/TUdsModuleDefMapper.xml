@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.unidom.indices.mapper.TUdsModuleDefMapper">
+    
+    <resultMap type="TUdsModuleDef" id="TUdsModuleDefResult">
+        <result property="id"    column="id"    />
+        <result property="moduleCode"    column="module_code"    />
+        <result property="moduleName"    column="module_name"    />
+        <result property="moduleStyle"    column="module_style"    />
+        <result property="moduleIndiceName"    column="module_indice_name"    />
+        <result property="moduleIndiceAlias"    column="module_indice_alias"    />
+        <result property="globalIndiceAlias"    column="global_indice_alias"    />
+        <result property="dtlPageDisplay"    column="dtl_page_display"    />
+        <result property="displayFlag"    column="display_flag"    />
+        <result property="displaySort"    column="display_sort"    />
+        <result property="frontListTplId"    column="front_list_tpl_id"    />
+        <result property="frontDtlTplId"    column="front_dtl_tpl_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="mapFlag"    column="map_flag"    />
+        <result property="needDbFileField"    column="need_db_file_field"    />
+        <result property="esFiledataAnalysisFlag"    column="es_filedata_analysis_flag"    />
+        <result property="moduleStatus"    column="module_status"    />
+        <result property="presetFlag"    column="preset_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+
+    </resultMap>
+
+    <sql id="selectTUdsModuleDefVo">
+        select id, module_code, module_name, module_style, module_indice_name, module_indice_alias, global_indice_alias, dtl_page_display, display_flag, display_sort, front_list_tpl_id, front_dtl_tpl_id, remark, map_flag, need_db_file_field, es_filedata_analysis_flag, module_status, preset_flag, create_by, create_time, update_by, update_time from t_uds_module_def
+    </sql>
+
+    <select id="selectTUdsModuleDefList" parameterType="TUdsModuleDef" resultMap="TUdsModuleDefResult">
+        <include refid="selectTUdsModuleDefVo"/>
+        <where>  
+            <if test="moduleCode != null  and moduleCode != ''"> and module_code = #{moduleCode}</if>
+            <if test="moduleName != null  and moduleName != ''"> and module_name like concat('%', #{moduleName}, '%')</if>
+            <if test="moduleStyle != null  and moduleStyle != ''"> and module_style = #{moduleStyle}</if>
+            <if test="moduleIndiceName != null  and moduleIndiceName != ''"> and module_indice_name like concat('%', #{moduleIndiceName}, '%')</if>
+            <if test="moduleIndiceAlias != null  and moduleIndiceAlias != ''"> and module_indice_alias = #{moduleIndiceAlias}</if>
+            <if test="globalIndiceAlias != null  and globalIndiceAlias != ''"> and global_indice_alias = #{globalIndiceAlias}</if>
+            <if test="dtlPageDisplay != null "> and dtl_page_display = #{dtlPageDisplay}</if>
+            <if test="displayFlag != null "> and display_flag = #{displayFlag}</if>
+            <if test="displaySort != null "> and display_sort = #{displaySort}</if>
+            <if test="frontListTplId != null  and frontListTplId != ''"> and front_list_tpl_id = #{frontListTplId}</if>
+            <if test="frontDtlTplId != null  and frontDtlTplId != ''"> and front_dtl_tpl_id = #{frontDtlTplId}</if>
+            <if test="mapFlag != null "> and map_flag = #{mapFlag}</if>
+            <if test="needDbFileField != null "> and need_db_file_field = #{needDbFileField}</if>
+            <if test="esFiledataAnalysisFlag != null "> and es_filedata_analysis_flag = #{esFiledataAnalysisFlag}</if>
+            <if test="moduleStatus != null "> and module_status = #{moduleStatus}</if>
+            <if test="presetFlag != null "> and preset_flag = #{presetFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectTUdsModuleDefById" parameterType="Long" resultMap="TUdsModuleDefResult">
+        <include refid="selectTUdsModuleDefVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTUdsModuleDef" parameterType="TUdsModuleDef" useGeneratedKeys="true" keyProperty="id">
+        insert into t_uds_module_def
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="moduleCode != null and moduleCode != ''">module_code,</if>
+            <if test="moduleName != null and moduleName != ''">module_name,</if>
+            <if test="moduleStyle != null and moduleStyle != ''">module_style,</if>
+            <if test="moduleIndiceName != null and moduleIndiceName != ''">module_indice_name,</if>
+            <if test="moduleIndiceAlias != null and moduleIndiceAlias != ''">module_indice_alias,</if>
+            <if test="globalIndiceAlias != null and globalIndiceAlias != ''">global_indice_alias,</if>
+            <if test="dtlPageDisplay != null">dtl_page_display,</if>
+            <if test="displayFlag != null">display_flag,</if>
+            <if test="displaySort != null">display_sort,</if>
+            <if test="frontListTplId != null and frontListTplId != ''">front_list_tpl_id,</if>
+            <if test="frontDtlTplId != null and frontDtlTplId != ''">front_dtl_tpl_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="mapFlag != null">map_flag,</if>
+            <if test="needDbFileField != null">need_db_file_field,</if>
+            <if test="esFiledataAnalysisFlag != null">es_filedata_analysis_flag,</if>
+            <if test="moduleStatus != null">module_status,</if>
+            <if test="presetFlag != null">preset_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="moduleCode != null and moduleCode != ''">#{moduleCode},</if>
+            <if test="moduleName != null and moduleName != ''">#{moduleName},</if>
+            <if test="moduleStyle != null and moduleStyle != ''">#{moduleStyle},</if>
+            <if test="moduleIndiceName != null and moduleIndiceName != ''">#{moduleIndiceName},</if>
+            <if test="moduleIndiceAlias != null and moduleIndiceAlias != ''">#{moduleIndiceAlias},</if>
+            <if test="globalIndiceAlias != null and globalIndiceAlias != ''">#{globalIndiceAlias},</if>
+            <if test="dtlPageDisplay != null">#{dtlPageDisplay},</if>
+            <if test="displayFlag != null">#{displayFlag},</if>
+            <if test="displaySort != null">#{displaySort},</if>
+            <if test="frontListTplId != null and frontListTplId != ''">#{frontListTplId},</if>
+            <if test="frontDtlTplId != null and frontDtlTplId != ''">#{frontDtlTplId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="mapFlag != null">#{mapFlag},</if>
+            <if test="needDbFileField != null">#{needDbFileField},</if>
+            <if test="esFiledataAnalysisFlag != null">#{esFiledataAnalysisFlag},</if>
+            <if test="moduleStatus != null">#{moduleStatus},</if>
+            <if test="presetFlag != null">#{presetFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTUdsModuleDef" parameterType="TUdsModuleDef">
+        update t_uds_module_def
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="moduleCode != null and moduleCode != ''">module_code = #{moduleCode},</if>
+            <if test="moduleName != null and moduleName != ''">module_name = #{moduleName},</if>
+            <if test="moduleStyle != null and moduleStyle != ''">module_style = #{moduleStyle},</if>
+            <if test="moduleIndiceName != null and moduleIndiceName != ''">module_indice_name = #{moduleIndiceName},</if>
+            <if test="moduleIndiceAlias != null and moduleIndiceAlias != ''">module_indice_alias = #{moduleIndiceAlias},</if>
+            <if test="globalIndiceAlias != null and globalIndiceAlias != ''">global_indice_alias = #{globalIndiceAlias},</if>
+            <if test="dtlPageDisplay != null">dtl_page_display = #{dtlPageDisplay},</if>
+            <if test="displayFlag != null">display_flag = #{displayFlag},</if>
+            <if test="displaySort != null">display_sort = #{displaySort},</if>
+            <if test="frontListTplId != null and frontListTplId != ''">front_list_tpl_id = #{frontListTplId},</if>
+            <if test="frontDtlTplId != null and frontDtlTplId != ''">front_dtl_tpl_id = #{frontDtlTplId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="mapFlag != null">map_flag = #{mapFlag},</if>
+            <if test="needDbFileField != null">need_db_file_field = #{needDbFileField},</if>
+            <if test="esFiledataAnalysisFlag != null">es_filedata_analysis_flag = #{esFiledataAnalysisFlag},</if>
+            <if test="moduleStatus != null">module_status = #{moduleStatus},</if>
+            <if test="presetFlag != null">preset_flag = #{presetFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTUdsModuleDefById" parameterType="Long">
+        delete from t_uds_module_def where id = #{id}
+    </delete>
+
+    <delete id="deleteTUdsModuleDefByIds" parameterType="String">
+        delete from t_uds_module_def where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
