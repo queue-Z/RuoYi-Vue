@@ -1,4 +1,4 @@
-package com.ruoyi.unidom.util;
+package com.ruoyi.unidom.common.util;
 
 public class GenericException extends RuntimeException {
     public GenericException() {

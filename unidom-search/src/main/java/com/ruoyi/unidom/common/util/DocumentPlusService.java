@@ -1,9 +1,12 @@
-package com.ruoyi.unidom.util;
+package com.ruoyi.unidom.common.util;
 
+import com.ruoyi.unidom.common.page.PageResult;
 import org.elasticsearch.action.main.MainResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.script.Script;
 import com.ruoyi.unidom.model.IdEntity;
+import org.elasticsearch.search.collapse.CollapseBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
 
 import java.util.List;
 
@@ -31,40 +34,40 @@ public interface DocumentPlusService {
 
     int delete(String index, String type, String id);
 
-//    /**
-//     *
-//     * @param index 索引名称
-//     * @param type 索引类型
-//     * @param clazz
-//     * @param queryBuilder
-//     * @param collapseBuilder 折叠查询，去重
-//     * @param from
-//     * @param size
-//     * @param sortBuilders
-//     * @param <T>
-//     * @return
-//     */
-//    <T> PageResult<T> search(String index, String type,
-//                             Class<T> clazz,
-//                             QueryBuilder queryBuilder,
-//                             CollapseBuilder collapseBuilder,
-//                             int from, int size, List<SortBuilder> sortBuilders);
-//
-//    <T> PageResult<T> search(String index, String type,
-//                             Class<T> clazz,
-//                             QueryBuilder queryBuilder,
-//                             CollapseBuilder collapseBuilder,
-//                             int from, int size, List<String> includeFields, List<String> excludeFields,
-//                             List<String> highlightFields,
-//                             List<SortBuilder> sortBuilders);
-//
-//    <T> PageResult<T> search(List<String> index, List<String> type,
-//                             Class<T> clazz,
-//                             QueryBuilder queryBuilder,
-//                             CollapseBuilder collapseBuilder,
-//                             int from, int size, List<String> includeFields, List<String> excludeFields,
-//                             List<String> highlightFields,
-//                             List<SortBuilder> sortBuilders);
+    /**
+     *
+     * @param index 索引名称
+     * @param type 索引类型
+     * @param clazz
+     * @param queryBuilder
+     * @param collapseBuilder 折叠查询，去重
+     * @param from
+     * @param size
+     * @param sortBuilders
+     * @param <T>
+     * @return
+     */
+    <T> PageResult<T> search(String index, String type,
+                             Class<T> clazz,
+                             QueryBuilder queryBuilder,
+                             CollapseBuilder collapseBuilder,
+                             int from, int size, List<SortBuilder> sortBuilders);
+
+    <T> PageResult<T> search(String index, String type,
+                             Class<T> clazz,
+                             QueryBuilder queryBuilder,
+                             CollapseBuilder collapseBuilder,
+                             int from, int size, List<String> includeFields, List<String> excludeFields,
+                             List<String> highlightFields,
+                             List<SortBuilder> sortBuilders);
+
+    <T> PageResult<T> search(List<String> index, List<String> type,
+                             Class<T> clazz,
+                             QueryBuilder queryBuilder,
+                             CollapseBuilder collapseBuilder,
+                             int from, int size, List<String> includeFields, List<String> excludeFields,
+                             List<String> highlightFields,
+                             List<SortBuilder> sortBuilders);
 
 //    /**
 //     * 折叠查询

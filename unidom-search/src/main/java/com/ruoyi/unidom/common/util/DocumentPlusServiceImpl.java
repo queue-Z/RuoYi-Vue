@@ -1,6 +1,8 @@
-package com.ruoyi.unidom.util;
+package com.ruoyi.unidom.common.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.ruoyi.unidom.common.page.PageResult;
 import com.ruoyi.unidom.model.IdEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.DocWriteResponse.Result;
@@ -29,10 +31,16 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 import org.elasticsearch.index.reindex.UpdateByQueryRequest;
+import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.script.Script;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.collapse.CollapseBuilder;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.suggest.SuggestBuilder;
 import org.elasticsearch.search.suggest.SuggestBuilders;
 import org.elasticsearch.search.suggest.SuggestionBuilder;
@@ -43,7 +51,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -294,132 +305,109 @@ public class DocumentPlusServiceImpl implements DocumentPlusService {
     }
 
 
-//    @Override
-//    public <T> PageResult<T> search(String index, String type, Class<T> clazz, QueryBuilder queryBuilder, CollapseBuilder collapseBuilder,int from, int size, List<String> includeFields, List<String> excludeFields, List<String> highlightFields, List<SortBuilder> sortBuilders) {
-//        List<String> indexList = Stream.of(index).collect(Collectors.toList());
-//        List<String> typeList =new ArrayList<>();
-//        if(!StringUtil.isBlank(type)){
-//            typeList = Stream.of(type).collect(Collectors.toList());
-//        }
-//        return search(indexList,typeList,clazz,queryBuilder,collapseBuilder,from,size,includeFields,excludeFields,highlightFields,sortBuilders);
-//    }
-//
-//    @Override
-//    public <T> PageResult<T> search(List<String> index, List<String> type, Class<T> clazz, QueryBuilder queryBuilder, CollapseBuilder collapseBuilder,int from, int size, List<String> includeFields, List<String> excludeFields, List<String> highlightFields, List<SortBuilder> sortBuilders) {
-//        try {
-//            SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-//            //查询条件
-//            if (queryBuilder != null) {
-//                sourceBuilder.query(queryBuilder);
-//            }
-//
-//            //折叠查询条件
-//            if(collapseBuilder!=null){
-//                sourceBuilder.collapse(collapseBuilder);
-//            }
-//
-//            // 自行设置排序条件
-//            //经纬度的排序条件的index，-1：无，大于-1 代表有
-//            int sortGeoDistanceIndex=-1;
-//            if (!CollectionUtil.isEmpty(sortBuilders)) {
-//                for (int i=0;i<sortBuilders.size();i++) {
-//                    SortBuilder sortBuilder=sortBuilders.get(i);
-//                    sourceBuilder.sort(sortBuilder);
-//
-//                    if(sortBuilder instanceof GeoDistanceSortBuilder){
-//                        sortGeoDistanceIndex=i;
-//                    }
-//                }
-//            }
-//            String[] includes = null;
-//            String[] excludes = null;
-//
-//            if (includeFields != null && !includeFields.isEmpty()) {
-//                includes = includeFields.toArray(new String[includeFields.size()]);
-//            }
-//            if (excludeFields != null && !excludeFields.isEmpty()) {
-//                excludes = excludeFields.toArray(new String[excludeFields.size()]);
-//            }
-//
-//            sourceBuilder.fetchSource(includes, excludes);
-//            //高亮显示条件设置
-//            if (highlightFields != null && !highlightFields.isEmpty()) {
-//                HighlightBuilder highlightBuilder = new HighlightBuilder();
-//                for (String highlightFileld:highlightFields) {
-//                    highlightBuilder.field(highlightFileld, 1000)
-//                            .preTags("<em>")
-//                            .postTags("</em>");
-//                    sourceBuilder.highlighter(highlightBuilder);
-//
-//                };
-//            }
-//            SearchResponse searchResponse = this.search(index, type, from, size, sourceBuilder);
-//            RestStatus status = searchResponse.status();
-//
-//            if (status != RestStatus.OK) {
-//                throw new RuntimeException("search index exception");
-//            }
-//            //处理查询结果
-//            SearchHits hits = searchResponse.getHits();
-//            SearchHit[] searchHits = hits.getHits();
-//            long total = hits.getTotalHits();
-//            //查询结果为空
-//            if (searchHits == null || searchHits.length == 0) {
-//                return new PageResult(Collections.emptyList(), total);
-//            }
-//            //处理查询结果
-//            List<T> entityList = new ArrayList<>();
-//
-//
-//            for (SearchHit searchHit : searchHits) {
-//                Map<String, HighlightField> highlights = searchHit.getHighlightFields();
-//                String indexName=searchHit.getIndex();
-//                String typeName=searchHit.getType();
-//                String id=searchHit.getId();
-//                float score=searchHit.getScore();
-//
-//                if (highlights.isEmpty()) {
-//                    String sourceAsString = searchHit.getSourceAsString();
-//                    ObjectNode obj=JacksonPlusUtil.fromJson(sourceAsString,ObjectNode.class);
-//                    obj.put(ES_INDEX,indexName);
-//                    obj.put(ES_TYPE,typeName);
-//                    obj.put(ES_ID,id);
-//                    obj.put(ES_SCORE,score);
-//
-//                    if(sortGeoDistanceIndex>-1){
-//                        double sortDistance = (double) searchHit.getSortValues()[sortGeoDistanceIndex];
-//                        BigDecimal geoDis = new BigDecimal(sortDistance);
-//                        obj.put(GEO_DISTANCE, geoDis.setScale(2, BigDecimal.ROUND_HALF_DOWN));
-//                    }
-//
-//                    T entity = JacksonPlusUtil.fromJson(JacksonPlusUtil.toJson(obj),clazz);
-//                    entityList.add(entity);
-//
-//                } else {
-//                    // 含义高亮显示
-//                    Map<String, Object> source = searchHit.getSourceAsMap();
-//                    source.put(ES_INDEX,indexName);
-//                    source.put(ES_TYPE,typeName);
-//                    source.put(ES_ID,typeName);
-//                    source.put(ES_SCORE,score);
-//
-//                    if(sortGeoDistanceIndex>-1){
-//                        double sortDistance = (double) searchHit.getSortValues()[sortGeoDistanceIndex];
-//                        BigDecimal geoDis = new BigDecimal(sortDistance);
-//                        source.put(GEO_DISTANCE, geoDis.setScale(2, BigDecimal.ROUND_HALF_DOWN));
-//                    }
-//
-//                    entityList.add(fromMap(source, highlights, clazz, null));
-//                }
-//
-//            }
-//            return new PageResult(entityList, total);
-//        } catch (Exception e) {
-//            log.error("query exception ", e);
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
+    @Override
+    public <T> PageResult<T> search(String index, String type, Class<T> clazz, QueryBuilder queryBuilder, CollapseBuilder collapseBuilder,int from, int size, List<String> includeFields, List<String> excludeFields, List<String> highlightFields, List<SortBuilder> sortBuilders) {
+        List<String> indexList = Stream.of(index).collect(Collectors.toList());
+        List<String> typeList =new ArrayList<>();
+        if(!StringUtil.isBlank(type)){
+            typeList = Stream.of(type).collect(Collectors.toList());
+        }
+        return search(indexList,typeList,clazz,queryBuilder,collapseBuilder,from,size,includeFields,excludeFields,highlightFields,sortBuilders);
+    }
+
+    @Override
+    public <T> PageResult<T> search(List<String> index, List<String> type, Class<T> clazz, QueryBuilder queryBuilder, CollapseBuilder collapseBuilder,int from, int size, List<String> includeFields, List<String> excludeFields, List<String> highlightFields, List<SortBuilder> sortBuilders) {
+        try {
+            SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+            //查询条件
+            if (queryBuilder != null) {
+                sourceBuilder.query(queryBuilder);
+            }
+
+            //折叠查询条件
+            if(collapseBuilder!=null){
+                sourceBuilder.collapse(collapseBuilder);
+            }
+
+            String[] includes = null;
+            String[] excludes = null;
+
+            if (includeFields != null && !includeFields.isEmpty()) {
+                includes = includeFields.toArray(new String[includeFields.size()]);
+            }
+            if (excludeFields != null && !excludeFields.isEmpty()) {
+                excludes = excludeFields.toArray(new String[excludeFields.size()]);
+            }
+
+            sourceBuilder.fetchSource(includes, excludes);
+            //高亮显示条件设置
+            if (highlightFields != null && !highlightFields.isEmpty()) {
+                HighlightBuilder highlightBuilder = new HighlightBuilder();
+                for (String highlightFileld:highlightFields) {
+                    highlightBuilder.field(highlightFileld, 1000)
+                            .preTags("<em>")
+                            .postTags("</em>");
+                    sourceBuilder.highlighter(highlightBuilder);
+
+                };
+            }
+            SearchResponse searchResponse = this.search(index, type, from, size, sourceBuilder);
+            RestStatus status = searchResponse.status();
+
+            if (status != RestStatus.OK) {
+                throw new RuntimeException("search index exception");
+            }
+            //处理查询结果
+            SearchHits hits = searchResponse.getHits();
+            SearchHit[] searchHits = hits.getHits();
+            // long total = hits.getTotalHits();
+            long total = hits.getHits().length;
+            //查询结果为空
+            if (searchHits == null || searchHits.length == 0) {
+                return new PageResult(Collections.emptyList(), total);
+            }
+            //处理查询结果
+            List<T> entityList = new ArrayList<>();
+
+
+            for (SearchHit searchHit : searchHits) {
+                Map<String, HighlightField> highlights = searchHit.getHighlightFields();
+                String indexName=searchHit.getIndex();
+                String typeName=searchHit.getType();
+                String id=searchHit.getId();
+                float score=searchHit.getScore();
+
+                if (highlights.isEmpty()) {
+                    String sourceAsString = searchHit.getSourceAsString();
+                    ObjectNode obj=JacksonPlusUtil.fromJson(sourceAsString,ObjectNode.class);
+                    obj.put(ES_INDEX,indexName);
+                    obj.put(ES_TYPE,typeName);
+                    obj.put(ES_ID,id);
+                    obj.put(ES_SCORE,score);
+
+                    T entity = JacksonPlusUtil.fromJson(JacksonPlusUtil.toJson(obj),clazz);
+                    entityList.add(entity);
+
+                } else {
+                    // 含义高亮显示
+                    Map<String, Object> source = searchHit.getSourceAsMap();
+                    source.put(ES_INDEX,indexName);
+                    source.put(ES_TYPE,typeName);
+                    source.put(ES_ID,typeName);
+                    source.put(ES_SCORE,score);
+
+
+                    entityList.add(fromMap(source, highlights, clazz, null));
+                }
+
+            }
+            return new PageResult(entityList, total);
+        } catch (Exception e) {
+            log.error("query exception ", e);
+            throw new RuntimeException(e);
+        }
+    }
+
 //    @Override
 //    public <T> List<CollapseResult<T>> collapseSearch(List<String> index, List<String> type, Class<T> clazz, QueryBuilder queryBuilder, CollapseBuilder collapseBuilder, List<String> includeFields, List<String> excludeFields,int from, int size, List<SortBuilder<?>> sortBuilders) {
 //        List<CollapseResult<T>> result=new ArrayList<>();
@@ -617,15 +605,15 @@ public class DocumentPlusServiceImpl implements DocumentPlusService {
 
     }
 
-//    @Override
-//    public <T> PageResult<T> search(String index, String type,
-//                                    Class<T> clazz,
-//                                    QueryBuilder queryBuilder,
-//                                    CollapseBuilder collapseBuilder,
-//                                    int from, int size, List<SortBuilder> sortBuilders) {
-//        return this.search(index, type, clazz, queryBuilder,collapseBuilder, from, size, null, null,null,
-//                sortBuilders);
-//    }
+    @Override
+    public <T> PageResult<T> search(String index, String type,
+                                    Class<T> clazz,
+                                    QueryBuilder queryBuilder,
+                                    CollapseBuilder collapseBuilder,
+                                    int from, int size, List<SortBuilder> sortBuilders) {
+        return this.search(index, type, clazz, queryBuilder,collapseBuilder, from, size, null, null,null,
+                sortBuilders);
+    }
 
     @Override
     public long deleteByQuery(String index, String type,

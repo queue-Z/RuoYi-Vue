@@ -1,4 +1,4 @@
-package com.ruoyi.unidom.util;
+package com.ruoyi.unidom.common.util;
 
 //
 // Source code recreated from a .class file by IntelliJ IDEA

@@ -52,9 +52,9 @@ public class EventESVO extends BaseESVO{
     @Excel(name = "事件发生时间")
     private	Date	eventOccurTime	;
     @Excel(name = "事件发生地经度-1.2版本后调整为dataLongitude")
-    private	Double	eventLongitude	;
+    private	Double	dataLongitude	;
     @Excel(name = "事件发生地纬度-1.2版本后调整为dataLatitude")
-    private	Double	eventLatitude	;
+    private	Double	dataLatitude	;
     @Excel(name = "事件发生地址")
     private	String	eventAddress	;
     @Excel(name = "事件内容")

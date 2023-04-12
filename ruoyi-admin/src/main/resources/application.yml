@@ -89,6 +89,25 @@ spring:
         max-active: 8
         # #连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1ms
+  # es 配置
+  elasticsearch:
+    rest:
+      # 地址
+      uris: http://localhost:9200
+      # 连接超时时间
+      connect-timeout: 10s
+      # 连接请求超时时间
+      connection-request-timeout: 10s
+      # 数据读取超时时间
+      socket-timeout: 10s
+      # 最大连接数
+      max-connect-total: 30
+      # 最大路由连接数
+      max-connect-per-route: 10
+      # 认证用户名
+      username:
+      # 认证密码
+      password:
 
 # token配置
 token:
@@ -129,3 +148,5 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+
+
