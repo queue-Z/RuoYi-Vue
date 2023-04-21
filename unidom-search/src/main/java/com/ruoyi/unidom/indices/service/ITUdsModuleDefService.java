@@ -20,6 +20,8 @@ public interface ITUdsModuleDefService
      */
     public TUdsModuleDef selectTUdsModuleDefById(Long id);
 
+    public TUdsModuleDef selectTUdsModuleDefByCode(String code);
+
     /**
      * 查询模块定义列表
      * 

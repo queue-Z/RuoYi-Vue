@@ -60,7 +60,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectTUdsModuleDefVo"/>
         where id = #{id}
     </select>
-        
+
+    <select id="selectTUdsModuleDefByCode" parameterType="String" resultMap="TUdsModuleDefResult">
+        <include refid="selectTUdsModuleDefVo"/>
+        where module_code = #{code}
+    </select>
+
     <insert id="insertTUdsModuleDef" parameterType="TUdsModuleDef" useGeneratedKeys="true" keyProperty="id">
         insert into t_uds_module_def
         <trim prefix="(" suffix=")" suffixOverrides=",">

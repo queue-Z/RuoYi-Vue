@@ -345,8 +345,8 @@ public class DocumentPlusServiceImpl implements DocumentPlusService {
                 HighlightBuilder highlightBuilder = new HighlightBuilder();
                 for (String highlightFileld:highlightFields) {
                     highlightBuilder.field(highlightFileld, 1000)
-                            .preTags("<em>")
-                            .postTags("</em>");
+                            .preTags("<font color='red'>")
+                            .postTags("</font>");
                     sourceBuilder.highlighter(highlightBuilder);
 
                 };

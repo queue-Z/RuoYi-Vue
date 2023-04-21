@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.unidom.collection.mapper.UnidomEventDataMapper">
+    
+    <resultMap type="UnidomEventData" id="UnidomEventDataResult">
+        <result property="id"    column="id"    />
+        <result property="moduleCode"    column="module_code"    />
+        <result property="labelKeywords"    column="label_keywords"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="esUpdateTime"    column="es_update_time"    />
+        <result property="dataTitle"    column="data_title"    />
+        <result property="dataDesc"    column="data_desc"    />
+        <result property="eventDetailUrl"    column="event_detail_url"    />
+        <result property="eventTypeName"    column="event_type_name"    />
+        <result property="eventOccurTime"    column="event_occur_time"    />
+        <result property="eventAddress"    column="event_address"    />
+        <result property="eventContent"    column="event_content"    />
+    </resultMap>
+
+    <sql id="selectUnidomEventDataVo">
+        select id, module_code, label_keywords, create_time, update_time, es_update_time, data_title, data_desc, event_detail_url, event_type_name, event_occur_time, event_address, event_content from unidom_event_data
+    </sql>
+
+    <select id="selectUnidomEventDataList" parameterType="UnidomEventData" resultMap="UnidomEventDataResult">
+        <include refid="selectUnidomEventDataVo"/>
+        <where>  
+            <if test="moduleCode != null  and moduleCode != ''"> and module_code = #{moduleCode}</if>
+            <if test="labelKeywords != null  and labelKeywords != ''"> and label_keywords = #{labelKeywords}</if>
+            <if test="esUpdateTime != null "> and es_update_time = #{esUpdateTime}</if>
+            <if test="dataTitle != null  and dataTitle != ''"> and data_title = #{dataTitle}</if>
+            <if test="dataDesc != null  and dataDesc != ''"> and data_desc = #{dataDesc}</if>
+            <if test="eventDetailUrl != null  and eventDetailUrl != ''"> and event_detail_url = #{eventDetailUrl}</if>
+            <if test="eventTypeName != null  and eventTypeName != ''"> and event_type_name like concat('%', #{eventTypeName}, '%')</if>
+            <if test="eventOccurTime != null "> and event_occur_time = #{eventOccurTime}</if>
+            <if test="eventAddress != null  and eventAddress != ''"> and event_address = #{eventAddress}</if>
+            <if test="eventContent != null  and eventContent != ''"> and event_content = #{eventContent}</if>
+        </where>
+    </select>
+    
+    <select id="selectUnidomEventDataById" parameterType="String" resultMap="UnidomEventDataResult">
+        <include refid="selectUnidomEventDataVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUnidomEventData" parameterType="UnidomEventData">
+        insert into unidom_event_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="moduleCode != null and moduleCode != ''">module_code,</if>
+            <if test="labelKeywords != null">label_keywords,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="esUpdateTime != null">es_update_time,</if>
+            <if test="dataTitle != null">data_title,</if>
+            <if test="dataDesc != null">data_desc,</if>
+            <if test="eventDetailUrl != null">event_detail_url,</if>
+            <if test="eventTypeName != null">event_type_name,</if>
+            <if test="eventOccurTime != null">event_occur_time,</if>
+            <if test="eventAddress != null">event_address,</if>
+            <if test="eventContent != null">event_content,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="moduleCode != null and moduleCode != ''">#{moduleCode},</if>
+            <if test="labelKeywords != null">#{labelKeywords},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="esUpdateTime != null">#{esUpdateTime},</if>
+            <if test="dataTitle != null">#{dataTitle},</if>
+            <if test="dataDesc != null">#{dataDesc},</if>
+            <if test="eventDetailUrl != null">#{eventDetailUrl},</if>
+            <if test="eventTypeName != null">#{eventTypeName},</if>
+            <if test="eventOccurTime != null">#{eventOccurTime},</if>
+            <if test="eventAddress != null">#{eventAddress},</if>
+            <if test="eventContent != null">#{eventContent},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUnidomEventData" parameterType="UnidomEventData">
+        update unidom_event_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="moduleCode != null and moduleCode != ''">module_code = #{moduleCode},</if>
+            <if test="labelKeywords != null">label_keywords = #{labelKeywords},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="esUpdateTime != null">es_update_time = #{esUpdateTime},</if>
+            <if test="dataTitle != null">data_title = #{dataTitle},</if>
+            <if test="dataDesc != null">data_desc = #{dataDesc},</if>
+            <if test="eventDetailUrl != null">event_detail_url = #{eventDetailUrl},</if>
+            <if test="eventTypeName != null">event_type_name = #{eventTypeName},</if>
+            <if test="eventOccurTime != null">event_occur_time = #{eventOccurTime},</if>
+            <if test="eventAddress != null">event_address = #{eventAddress},</if>
+            <if test="eventContent != null">event_content = #{eventContent},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUnidomEventDataById" parameterType="String">
+        delete from unidom_event_data where id = #{id}
+    </delete>
+
+    <delete id="deleteUnidomEventDataByIds" parameterType="String">
+        delete from unidom_event_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

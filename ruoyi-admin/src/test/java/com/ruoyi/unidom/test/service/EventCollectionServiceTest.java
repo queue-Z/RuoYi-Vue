@@ -3,10 +3,9 @@ package com.ruoyi.unidom.test.service;
 import com.alibaba.fastjson2.JSON;
 import com.ruoyi.unidom.collection.domain.UnidomEventData;
 import com.ruoyi.unidom.collection.mapper.UnidomEventDataMapper;
-import com.ruoyi.unidom.collection.service.EventCollectionService;
+import com.ruoyi.unidom.collection.service.CollectionService;
 import com.ruoyi.unidom.collection.service.IUnidomEventDataService;
 import com.ruoyi.unidom.common.page.PageResult;
-import com.ruoyi.unidom.common.response.PageResponse;
 import com.ruoyi.unidom.common.util.EsUtil;
 import com.ruoyi.unidom.esvo.BaseESVO;
 import com.ruoyi.unidom.esvo.EventESVO;
@@ -18,9 +17,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.junit.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +33,7 @@ import java.sql.Timestamp;
 @SpringBootTest
 public class EventCollectionServiceTest {
     @Resource
-    EventCollectionService eventCollectionService;
+    CollectionService collectionService;
 
     @Resource
     IUnidomEventDataService unidomEventDataService;
@@ -55,7 +52,8 @@ public class EventCollectionServiceTest {
 
     @Test
     public void db2esTest() {
-        eventCollectionService.collectEvent();
+        collectionService.collectEvent();
+//        collectionService.collectFile();
     }
 
     @Test

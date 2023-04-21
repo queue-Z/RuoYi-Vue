@@ -31,6 +31,7 @@ public class UnidomEventData extends BaseEntity
     /** es更新时间，默认通update_time */
 
     @Excel(name = "es更新时间，默认通update_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date esUpdateTime;
 
     /** 事件标题 */
@@ -50,7 +51,9 @@ public class UnidomEventData extends BaseEntity
     private String eventTypeName;
 
     /** 事件发生时间 */
+
     @Excel(name = "事件发生时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date eventOccurTime;
 
     /** 事件发生地址 */
@@ -138,7 +141,7 @@ public class UnidomEventData extends BaseEntity
         this.eventOccurTime = eventOccurTime;
     }
 
-    public Date getEventOccurTime() 
+    public Date getEventOccurTime()
     {
         return eventOccurTime;
     }

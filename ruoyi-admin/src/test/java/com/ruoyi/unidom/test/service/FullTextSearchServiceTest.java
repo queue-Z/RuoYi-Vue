@@ -3,6 +3,7 @@ package com.ruoyi.unidom.test.service;
 import com.alibaba.fastjson2.JSON;
 import com.ruoyi.unidom.collection.domain.UnidomEventData;
 import com.ruoyi.unidom.common.util.DocumentPlusService;
+import com.ruoyi.unidom.fulltextsearch.FullTextSearchService;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -30,6 +31,9 @@ public class FullTextSearchServiceTest {
 
     @Autowired
     RestHighLevelClient client;
+
+    @Autowired
+    FullTextSearchService fullTextSearchService;
 
     @Test
     public void searchTest() throws IOException {
@@ -74,6 +78,11 @@ public class FullTextSearchServiceTest {
         } catch (IOException e) {
             System.out.println("查询失败");
         }
+    }
+
+    @Test
+    public void queryTest(){
+        fullTextSearchService.fullTextSearch("普陀");
     }
 
 }

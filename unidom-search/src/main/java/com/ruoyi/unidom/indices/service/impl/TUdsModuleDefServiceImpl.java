@@ -33,6 +33,11 @@ public class TUdsModuleDefServiceImpl implements ITUdsModuleDefService
         return tUdsModuleDefMapper.selectTUdsModuleDefById(id);
     }
 
+    @Override
+    public TUdsModuleDef selectTUdsModuleDefByCode(String code)
+    {
+        return tUdsModuleDefMapper.selectTUdsModuleDefByCode(code);
+    }
     /**
      * 查询模块定义列表
      * 
