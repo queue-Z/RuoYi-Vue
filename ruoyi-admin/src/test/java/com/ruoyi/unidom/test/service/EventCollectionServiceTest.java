@@ -52,8 +52,10 @@ public class EventCollectionServiceTest {
 
     @Test
     public void db2esTest() {
-        collectionService.collectEvent();
+       // collectionService.collectEvent();
 //        collectionService.collectFile();
+       // collectionService.deleteAllEvent();
+        collectionService.updateEntity("m_event");
     }
 
     @Test

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.unidom.collection.mapper.UnidomPeopleDataMapper">
+    
+    <resultMap type="UnidomPeopleData" id="UnidomPeopleDataResult">
+        <result property="id"    column="id"    />
+        <result property="moduleCode"    column="module_code"    />
+        <result property="dataTitle"    column="data_title"    />
+        <result property="dataDesc"    column="data_desc"    />
+        <result property="labelKeywords"    column="label_keywords"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="esUpdateTime"    column="es_update_time"    />
+        <result property="perName"    column="per_name"    />
+        <result property="perGender"    column="per_gender"    />
+        <result property="perBirthDate"    column="per_birth_date"    />
+        <result property="perId"    column="per_id"    />
+        <result property="perNationality"    column="per_nationality"    />
+        <result property="perEthnicity"    column="per_ethnicity"    />
+        <result property="perNativePlace"    column="per_native_place"    />
+        <result property="perBirthPlace"    column="per_birth_place"    />
+        <result property="perContactInfo"    column="per_contact_info"    />
+        <result property="perEducation"    column="per_education"    />
+        <result property="perOccupation"    column="per_occupation"    />
+        <result property="perWorkPlace"    column="per_work_place"    />
+        <result property="perHomeAddress"    column="per_home_address"    />
+    </resultMap>
+
+    <sql id="selectUnidomPeopleDataVo">
+        select id, module_code, data_title, data_desc, label_keywords, create_time, update_time, es_update_time, per_name, per_gender, per_birth_date, per_id, per_nationality, per_ethnicity, per_native_place, per_birth_place, per_contact_info, per_education, per_occupation, per_work_place, per_home_address from unidom_people_data
+    </sql>
+
+    <select id="selectUnidomPeopleDataList" parameterType="UnidomPeopleData" resultMap="UnidomPeopleDataResult">
+        <include refid="selectUnidomPeopleDataVo"/>
+        <where>  
+            <if test="moduleCode != null  and moduleCode != ''"> and module_code = #{moduleCode}</if>
+            <if test="dataTitle != null  and dataTitle != ''"> and data_title = #{dataTitle}</if>
+            <if test="dataDesc != null  and dataDesc != ''"> and data_desc = #{dataDesc}</if>
+            <if test="labelKeywords != null  and labelKeywords != ''"> and label_keywords = #{labelKeywords}</if>
+            <if test="esUpdateTime != null "> and es_update_time = #{esUpdateTime}</if>
+            <if test="perName != null  and perName != ''"> and per_name like concat('%', #{perName}, '%')</if>
+            <if test="perGender != null  and perGender != ''"> and per_gender = #{perGender}</if>
+            <if test="perBirthDate != null "> and per_birth_date = #{perBirthDate}</if>
+            <if test="perId != null  and perId != ''"> and per_id = #{perId}</if>
+            <if test="perNationality != null  and perNationality != ''"> and per_nationality = #{perNationality}</if>
+            <if test="perEthnicity != null  and perEthnicity != ''"> and per_ethnicity = #{perEthnicity}</if>
+            <if test="perNativePlace != null  and perNativePlace != ''"> and per_native_place = #{perNativePlace}</if>
+            <if test="perBirthPlace != null  and perBirthPlace != ''"> and per_birth_place = #{perBirthPlace}</if>
+            <if test="perContactInfo != null  and perContactInfo != ''"> and per_contact_info = #{perContactInfo}</if>
+            <if test="perEducation != null  and perEducation != ''"> and per_education = #{perEducation}</if>
+            <if test="perOccupation != null  and perOccupation != ''"> and per_occupation = #{perOccupation}</if>
+            <if test="perWorkPlace != null  and perWorkPlace != ''"> and per_work_place = #{perWorkPlace}</if>
+            <if test="perHomeAddress != null  and perHomeAddress != ''"> and per_home_address = #{perHomeAddress}</if>
+        </where>
+    </select>
+    
+    <select id="selectUnidomPeopleDataById" parameterType="String" resultMap="UnidomPeopleDataResult">
+        <include refid="selectUnidomPeopleDataVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUnidomPeopleData" parameterType="UnidomPeopleData">
+        insert into unidom_people_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="moduleCode != null and moduleCode != ''">module_code,</if>
+            <if test="dataTitle != null">data_title,</if>
+            <if test="dataDesc != null">data_desc,</if>
+            <if test="labelKeywords != null">label_keywords,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="esUpdateTime != null">es_update_time,</if>
+            <if test="perName != null">per_name,</if>
+            <if test="perGender != null">per_gender,</if>
+            <if test="perBirthDate != null">per_birth_date,</if>
+            <if test="perId != null">per_id,</if>
+            <if test="perNationality != null">per_nationality,</if>
+            <if test="perEthnicity != null">per_ethnicity,</if>
+            <if test="perNativePlace != null">per_native_place,</if>
+            <if test="perBirthPlace != null">per_birth_place,</if>
+            <if test="perContactInfo != null">per_contact_info,</if>
+            <if test="perEducation != null">per_education,</if>
+            <if test="perOccupation != null">per_occupation,</if>
+            <if test="perWorkPlace != null">per_work_place,</if>
+            <if test="perHomeAddress != null">per_home_address,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="moduleCode != null and moduleCode != ''">#{moduleCode},</if>
+            <if test="dataTitle != null">#{dataTitle},</if>
+            <if test="dataDesc != null">#{dataDesc},</if>
+            <if test="labelKeywords != null">#{labelKeywords},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="esUpdateTime != null">#{esUpdateTime},</if>
+            <if test="perName != null">#{perName},</if>
+            <if test="perGender != null">#{perGender},</if>
+            <if test="perBirthDate != null">#{perBirthDate},</if>
+            <if test="perId != null">#{perId},</if>
+            <if test="perNationality != null">#{perNationality},</if>
+            <if test="perEthnicity != null">#{perEthnicity},</if>
+            <if test="perNativePlace != null">#{perNativePlace},</if>
+            <if test="perBirthPlace != null">#{perBirthPlace},</if>
+            <if test="perContactInfo != null">#{perContactInfo},</if>
+            <if test="perEducation != null">#{perEducation},</if>
+            <if test="perOccupation != null">#{perOccupation},</if>
+            <if test="perWorkPlace != null">#{perWorkPlace},</if>
+            <if test="perHomeAddress != null">#{perHomeAddress},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUnidomPeopleData" parameterType="UnidomPeopleData">
+        update unidom_people_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="moduleCode != null and moduleCode != ''">module_code = #{moduleCode},</if>
+            <if test="dataTitle != null">data_title = #{dataTitle},</if>
+            <if test="dataDesc != null">data_desc = #{dataDesc},</if>
+            <if test="labelKeywords != null">label_keywords = #{labelKeywords},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="esUpdateTime != null">es_update_time = #{esUpdateTime},</if>
+            <if test="perName != null">per_name = #{perName},</if>
+            <if test="perGender != null">per_gender = #{perGender},</if>
+            <if test="perBirthDate != null">per_birth_date = #{perBirthDate},</if>
+            <if test="perId != null">per_id = #{perId},</if>
+            <if test="perNationality != null">per_nationality = #{perNationality},</if>
+            <if test="perEthnicity != null">per_ethnicity = #{perEthnicity},</if>
+            <if test="perNativePlace != null">per_native_place = #{perNativePlace},</if>
+            <if test="perBirthPlace != null">per_birth_place = #{perBirthPlace},</if>
+            <if test="perContactInfo != null">per_contact_info = #{perContactInfo},</if>
+            <if test="perEducation != null">per_education = #{perEducation},</if>
+            <if test="perOccupation != null">per_occupation = #{perOccupation},</if>
+            <if test="perWorkPlace != null">per_work_place = #{perWorkPlace},</if>
+            <if test="perHomeAddress != null">per_home_address = #{perHomeAddress},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUnidomPeopleDataById" parameterType="String">
+        delete from unidom_people_data where id = #{id}
+    </delete>
+
+    <delete id="deleteUnidomPeopleDataByIds" parameterType="String">
+        delete from unidom_people_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

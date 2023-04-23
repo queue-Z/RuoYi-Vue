@@ -1,6 +1,7 @@
 package com.ruoyi.unidom.common.util;
 
 import com.ruoyi.unidom.common.page.PageResult;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.main.MainResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.script.Script;
@@ -107,21 +108,12 @@ public interface DocumentPlusService {
      */
     public <T> List<T> suggest(String indexName,QueryBuilder queryBuilder, String[] fields, String value, int count, Class<T> clazz);
 
-    <T> void asyncBulkAdd(String index, String type, List<T> entityList);
-    <T> void asyncBulkAdd(String index, String type, List<T> entityList,String pipline);
+    <T> int syncBulkAdd(String index, String type, List<T> entityList);
+    <T> int syncBulkAdd(String index, String type, List<T> entityList,String pipline);
 
-    <T extends IdEntity> void asyncBulkUpdate(String index, String type, List<T> entityList);
+    int syncBulkDelete(String index, String type, List<String> idList);
 
-//    void asyncBulkUpdateScript(String index, String type, List<ScriptObject> scriptList);
-
-    void asyncBulkDelete(String index, String type, List<String> idList);
-
-    <T> void syncBulkAdd(String index, String type, List<T> entityList);
-    <T> void syncBulkAdd(String index, String type, List<T> entityList,String pipline);
-
-    void syncBulkDelete(String index, String type, List<String> idList);
-
-    <T extends IdEntity> void syncBulkUpdate(String index, String type, List<T> entityList);
+    <T extends IdEntity> int syncBulkUpdate(String index, String type, List<T> entityList);
 
 //    void syncBulkUpdateScript(String index, String type, List<ScriptObject> scriptObjects);
 

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.unidom.collection.mapper.UnidomOrganizationDataMapper">
+    
+    <resultMap type="UnidomOrganizationData" id="UnidomOrganizationDataResult">
+        <result property="id"    column="id"    />
+        <result property="moduleCode"    column="module_code"    />
+        <result property="dataTitle"    column="data_title"    />
+        <result property="dataDesc"    column="data_desc"    />
+        <result property="labelKeywords"    column="label_keywords"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="esUpdateTime"    column="es_update_time"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="orgType"    column="org_type"    />
+        <result property="orgBusinessScope"    column="org_business_scope"    />
+        <result property="orgStatus"    column="org_status"    />
+        <result property="orgStaffSize"    column="org_staff_size"    />
+        <result property="orgContactInfo"    column="org_contact_info"    />
+        <result property="orgAddress"    column="org_address"    />
+        <result property="orgId"    column="org_id"    />
+        <result property="orgEstablishmentDate"    column="org_establishment_date"    />
+    </resultMap>
+
+    <sql id="selectUnidomOrganizationDataVo">
+        select id, module_code, data_title, data_desc, label_keywords, create_time, update_time, es_update_time, org_name, org_type, org_business_scope, org_status, org_staff_size, org_contact_info, org_address, org_id, org_establishment_date from unidom_organization_data
+    </sql>
+
+    <select id="selectUnidomOrganizationDataList" parameterType="UnidomOrganizationData" resultMap="UnidomOrganizationDataResult">
+        <include refid="selectUnidomOrganizationDataVo"/>
+        <where>  
+            <if test="moduleCode != null  and moduleCode != ''"> and module_code = #{moduleCode}</if>
+            <if test="dataTitle != null  and dataTitle != ''"> and data_title = #{dataTitle}</if>
+            <if test="dataDesc != null  and dataDesc != ''"> and data_desc = #{dataDesc}</if>
+            <if test="labelKeywords != null  and labelKeywords != ''"> and label_keywords = #{labelKeywords}</if>
+            <if test="esUpdateTime != null "> and es_update_time = #{esUpdateTime}</if>
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
+            <if test="orgType != null  and orgType != ''"> and org_type = #{orgType}</if>
+            <if test="orgBusinessScope != null  and orgBusinessScope != ''"> and org_business_scope = #{orgBusinessScope}</if>
+            <if test="orgStatus != null  and orgStatus != ''"> and org_status = #{orgStatus}</if>
+            <if test="orgStaffSize != null "> and org_staff_size = #{orgStaffSize}</if>
+            <if test="orgContactInfo != null  and orgContactInfo != ''"> and org_contact_info = #{orgContactInfo}</if>
+            <if test="orgAddress != null  and orgAddress != ''"> and org_address = #{orgAddress}</if>
+            <if test="orgId != null  and orgId != ''"> and org_id = #{orgId}</if>
+            <if test="orgEstablishmentDate != null "> and org_establishment_date = #{orgEstablishmentDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectUnidomOrganizationDataById" parameterType="String" resultMap="UnidomOrganizationDataResult">
+        <include refid="selectUnidomOrganizationDataVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUnidomOrganizationData" parameterType="UnidomOrganizationData">
+        insert into unidom_organization_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="moduleCode != null and moduleCode != ''">module_code,</if>
+            <if test="dataTitle != null">data_title,</if>
+            <if test="dataDesc != null">data_desc,</if>
+            <if test="labelKeywords != null">label_keywords,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="esUpdateTime != null">es_update_time,</if>
+            <if test="orgName != null">org_name,</if>
+            <if test="orgType != null">org_type,</if>
+            <if test="orgBusinessScope != null">org_business_scope,</if>
+            <if test="orgStatus != null">org_status,</if>
+            <if test="orgStaffSize != null">org_staff_size,</if>
+            <if test="orgContactInfo != null">org_contact_info,</if>
+            <if test="orgAddress != null">org_address,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="orgEstablishmentDate != null">org_establishment_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="moduleCode != null and moduleCode != ''">#{moduleCode},</if>
+            <if test="dataTitle != null">#{dataTitle},</if>
+            <if test="dataDesc != null">#{dataDesc},</if>
+            <if test="labelKeywords != null">#{labelKeywords},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="esUpdateTime != null">#{esUpdateTime},</if>
+            <if test="orgName != null">#{orgName},</if>
+            <if test="orgType != null">#{orgType},</if>
+            <if test="orgBusinessScope != null">#{orgBusinessScope},</if>
+            <if test="orgStatus != null">#{orgStatus},</if>
+            <if test="orgStaffSize != null">#{orgStaffSize},</if>
+            <if test="orgContactInfo != null">#{orgContactInfo},</if>
+            <if test="orgAddress != null">#{orgAddress},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="orgEstablishmentDate != null">#{orgEstablishmentDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUnidomOrganizationData" parameterType="UnidomOrganizationData">
+        update unidom_organization_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="moduleCode != null and moduleCode != ''">module_code = #{moduleCode},</if>
+            <if test="dataTitle != null">data_title = #{dataTitle},</if>
+            <if test="dataDesc != null">data_desc = #{dataDesc},</if>
+            <if test="labelKeywords != null">label_keywords = #{labelKeywords},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="esUpdateTime != null">es_update_time = #{esUpdateTime},</if>
+            <if test="orgName != null">org_name = #{orgName},</if>
+            <if test="orgType != null">org_type = #{orgType},</if>
+            <if test="orgBusinessScope != null">org_business_scope = #{orgBusinessScope},</if>
+            <if test="orgStatus != null">org_status = #{orgStatus},</if>
+            <if test="orgStaffSize != null">org_staff_size = #{orgStaffSize},</if>
+            <if test="orgContactInfo != null">org_contact_info = #{orgContactInfo},</if>
+            <if test="orgAddress != null">org_address = #{orgAddress},</if>
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="orgEstablishmentDate != null">org_establishment_date = #{orgEstablishmentDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUnidomOrganizationDataById" parameterType="String">
+        delete from unidom_organization_data where id = #{id}
+    </delete>
+
+    <delete id="deleteUnidomOrganizationDataByIds" parameterType="String">
+        delete from unidom_organization_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

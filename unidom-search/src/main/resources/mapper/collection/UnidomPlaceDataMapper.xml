@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.unidom.collection.mapper.UnidomPlaceDataMapper">
+    
+    <resultMap type="UnidomPlaceData" id="UnidomPlaceDataResult">
+        <result property="id"    column="id"    />
+        <result property="moduleCode"    column="module_code"    />
+        <result property="dataTitle"    column="data_title"    />
+        <result property="dataDesc"    column="data_desc"    />
+        <result property="labelKeywords"    column="label_keywords"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="esUpdateTime"    column="es_update_time"    />
+        <result property="plType"    column="pl_type"    />
+        <result property="plName"    column="pl_name"    />
+        <result property="plFunction"    column="pl_function"    />
+        <result property="plLocation"    column="pl_location"    />
+        <result property="plAddress"    column="pl_address"    />
+        <result property="plArea"    column="pl_area"    />
+        <result property="plTerrain"    column="pl_terrain"    />
+    </resultMap>
+
+    <sql id="selectUnidomPlaceDataVo">
+        select id, module_code, data_title, data_desc, label_keywords, create_time, update_time, es_update_time, pl_type, pl_name, pl_function, pl_location, pl_address, pl_area, pl_terrain from unidom_place_data
+    </sql>
+
+    <select id="selectUnidomPlaceDataList" parameterType="UnidomPlaceData" resultMap="UnidomPlaceDataResult">
+        <include refid="selectUnidomPlaceDataVo"/>
+        <where>  
+            <if test="moduleCode != null  and moduleCode != ''"> and module_code = #{moduleCode}</if>
+            <if test="dataTitle != null  and dataTitle != ''"> and data_title = #{dataTitle}</if>
+            <if test="dataDesc != null  and dataDesc != ''"> and data_desc = #{dataDesc}</if>
+            <if test="labelKeywords != null  and labelKeywords != ''"> and label_keywords = #{labelKeywords}</if>
+            <if test="esUpdateTime != null "> and es_update_time = #{esUpdateTime}</if>
+            <if test="plType != null  and plType != ''"> and pl_type = #{plType}</if>
+            <if test="plName != null  and plName != ''"> and pl_name like concat('%', #{plName}, '%')</if>
+            <if test="plFunction != null  and plFunction != ''"> and pl_function = #{plFunction}</if>
+            <if test="plLocation != null  and plLocation != ''"> and pl_location = #{plLocation}</if>
+            <if test="plAddress != null  and plAddress != ''"> and pl_address = #{plAddress}</if>
+            <if test="plArea != null  and plArea != ''"> and pl_area = #{plArea}</if>
+            <if test="plTerrain != null  and plTerrain != ''"> and pl_terrain = #{plTerrain}</if>
+        </where>
+    </select>
+    
+    <select id="selectUnidomPlaceDataById" parameterType="String" resultMap="UnidomPlaceDataResult">
+        <include refid="selectUnidomPlaceDataVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUnidomPlaceData" parameterType="UnidomPlaceData">
+        insert into unidom_place_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="moduleCode != null and moduleCode != ''">module_code,</if>
+            <if test="dataTitle != null">data_title,</if>
+            <if test="dataDesc != null">data_desc,</if>
+            <if test="labelKeywords != null">label_keywords,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="esUpdateTime != null">es_update_time,</if>
+            <if test="plType != null">pl_type,</if>
+            <if test="plName != null">pl_name,</if>
+            <if test="plFunction != null">pl_function,</if>
+            <if test="plLocation != null">pl_location,</if>
+            <if test="plAddress != null">pl_address,</if>
+            <if test="plArea != null">pl_area,</if>
+            <if test="plTerrain != null">pl_terrain,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="moduleCode != null and moduleCode != ''">#{moduleCode},</if>
+            <if test="dataTitle != null">#{dataTitle},</if>
+            <if test="dataDesc != null">#{dataDesc},</if>
+            <if test="labelKeywords != null">#{labelKeywords},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="esUpdateTime != null">#{esUpdateTime},</if>
+            <if test="plType != null">#{plType},</if>
+            <if test="plName != null">#{plName},</if>
+            <if test="plFunction != null">#{plFunction},</if>
+            <if test="plLocation != null">#{plLocation},</if>
+            <if test="plAddress != null">#{plAddress},</if>
+            <if test="plArea != null">#{plArea},</if>
+            <if test="plTerrain != null">#{plTerrain},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUnidomPlaceData" parameterType="UnidomPlaceData">
+        update unidom_place_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="moduleCode != null and moduleCode != ''">module_code = #{moduleCode},</if>
+            <if test="dataTitle != null">data_title = #{dataTitle},</if>
+            <if test="dataDesc != null">data_desc = #{dataDesc},</if>
+            <if test="labelKeywords != null">label_keywords = #{labelKeywords},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="esUpdateTime != null">es_update_time = #{esUpdateTime},</if>
+            <if test="plType != null">pl_type = #{plType},</if>
+            <if test="plName != null">pl_name = #{plName},</if>
+            <if test="plFunction != null">pl_function = #{plFunction},</if>
+            <if test="plLocation != null">pl_location = #{plLocation},</if>
+            <if test="plAddress != null">pl_address = #{plAddress},</if>
+            <if test="plArea != null">pl_area = #{plArea},</if>
+            <if test="plTerrain != null">pl_terrain = #{plTerrain},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUnidomPlaceDataById" parameterType="String">
+        delete from unidom_place_data where id = #{id}
+    </delete>
+
+    <delete id="deleteUnidomPlaceDataByIds" parameterType="String">
+        delete from unidom_place_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

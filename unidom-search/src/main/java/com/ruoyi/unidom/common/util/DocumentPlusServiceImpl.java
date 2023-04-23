@@ -6,6 +6,7 @@ import com.ruoyi.unidom.common.page.PageResult;
 import com.ruoyi.unidom.model.IdEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.DocWriteResponse.Result;
+import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -805,102 +806,16 @@ public class DocumentPlusServiceImpl implements DocumentPlusService {
 //    }
 
     @Override
-    public <T> void asyncBulkAdd(String index, String type,
-                                 List<T> entityList) {
-        asyncBulkAdd(index,type,entityList,null);
-    }
-    @Override
-    public <T> void asyncBulkAdd(String index, String type,
-                                 List<T> entityList,String pipeline) {
-        if (entityList == null || entityList.isEmpty()) {
-            return;
-        }
-        entityList.stream().forEach(entity -> {
-            IndexRequest indexRequest = null;
-            if (hasId(entity)) {
-                String id="";
-                if(entity instanceof  IdEntity){
-                    id=((IdEntity) entity).getId();
-                }
-                indexRequest = new IndexRequest(index, type, id);
-            } else {
-                indexRequest = new IndexRequest(index, type);
-            }
-            if(!StringUtil.isBlank(pipeline)){
-                indexRequest.setPipeline(pipeline);
-            }
-            try {
-                indexRequest.source(JacksonPlusUtil.toJson(entity), XContentType.JSON);
-            } catch (Exception e) {
-                log.error(" bulkCreate exception,index:{},type:{}", index, type, e);
-                throw new RuntimeException(e);
-            }
-            bulkProcessor.add(indexRequest);
-        });
-    }
-
-    @Override
-    public <T extends IdEntity> void asyncBulkUpdate(String index, String type,
-                                                     List<T> entityList) {
-        if (entityList == null || entityList.isEmpty()) {
-            return;
-        }
-        entityList.stream().forEach(entity -> {
-            UpdateRequest request = new UpdateRequest(index, type, entity.getId());
-            try {
-                request.doc(JacksonPlusUtil.toJson(entity), XContentType.JSON)
-                        .upsert(JacksonPlusUtil.toJson(entity), XContentType.JSON)
-                        .retryOnConflict(retryOnConflict);
-            } catch (Exception e) {
-                log.error(" bulkUpdate exception,index:{},type:{}", index, type, e);
-                throw new RuntimeException(e);
-            }
-            bulkProcessor.add(request);
-        });
-    }
-
-
-//    @Override
-//    public void asyncBulkUpdateScript(String index, String type,
-//                                      List<ScriptObject> scriptList) {
-//        if (scriptList == null || scriptList.isEmpty()) {
-//            return;
-//        }
-//        scriptList.stream().forEach(scriptObject -> {
-//            asyncBulkUpdateScript(index, type, scriptObject);
-//        });
-//    }
-//
-//    private void asyncBulkUpdateScript(String index, String type,
-//                                       ScriptObject scriptObject) {
-//        UpdateRequest request = new UpdateRequest(index, type, scriptObject.getId());
-//        request.script(scriptObject.getScript());
-//        request.retryOnConflict(retryOnConflict);
-//        bulkProcessor.add(request);
-//    }
-
-    @Override
-    public void asyncBulkDelete(String index, String type, List<String> idList) {
-        if (idList == null || idList.isEmpty()) {
-            return;
-        }
-        idList.stream().forEach(id -> {
-            DeleteRequest request = new DeleteRequest(index, type, id);
-            bulkProcessor.add(request);
-        });
-    }
-
-    @Override
-    public <T> void syncBulkAdd(String index, String type,
+    public <T> int syncBulkAdd(String index, String type,
                                 List<T> entityList) {
-        syncBulkAdd(index,type,entityList,null);
+        return syncBulkAdd(index,type,entityList,null);
     }
     @Override
-    public <T> void syncBulkAdd(String index, String type,
+    public <T> int syncBulkAdd(String index, String type,
                                 List<T> entityList,String pipeline) {
         try {
             if (entityList == null || entityList.isEmpty()) {
-                return;
+                return 0;
             }
             BulkRequest bulkRequest = new BulkRequest();
             for (T entity : entityList) {
@@ -923,10 +838,12 @@ public class DocumentPlusServiceImpl implements DocumentPlusService {
 
             BulkResponse bulkResponse = restHighLevelClient
                     .bulk(bulkRequest, RequestOptions.DEFAULT);
-
             if (bulkResponse.hasFailures()) {
                 throw new RuntimeException("bulkCreate exception" + bulkResponse.buildFailureMessage());
+            }else {
+                return bulkResponse.getItems().length;
             }
+
         } catch (Exception e) {
             log.error(" bulkCreate exception,index:{},type:{}", index, type, e);
             throw new RuntimeException(e);
@@ -934,11 +851,11 @@ public class DocumentPlusServiceImpl implements DocumentPlusService {
     }
 
     @Override
-    public void syncBulkDelete(String index, String type,
+    public int syncBulkDelete(String index, String type,
                                List<String> idList) {
         try {
             if (idList == null || idList.isEmpty()) {
-                return;
+                return 0;
             }
             BulkRequest bulkRequest = new BulkRequest();
             for (String id : idList) {
@@ -950,6 +867,10 @@ public class DocumentPlusServiceImpl implements DocumentPlusService {
             if (bulkResponse.hasFailures()) {
                 throw new RuntimeException("BulkDelete exception" + bulkResponse.buildFailureMessage());
             }
+            else {
+                return bulkResponse.getItems().length;
+            }
+
         } catch (Exception e) {
             log.error(" BulkDelete exception,index:{},type:{}", index, type, e);
             throw new RuntimeException(e);
@@ -957,11 +878,11 @@ public class DocumentPlusServiceImpl implements DocumentPlusService {
     }
 
     @Override
-    public <T extends IdEntity> void syncBulkUpdate(String index, String type,
+    public <T extends IdEntity> int syncBulkUpdate(String index, String type,
                                                     List<T> entityList) {
         try {
             if (entityList == null || entityList.isEmpty()) {
-                return;
+                return 0;
             }
             BulkRequest bulkRequest = new BulkRequest();
             for (IdEntity entity : entityList) {
@@ -975,6 +896,9 @@ public class DocumentPlusServiceImpl implements DocumentPlusService {
                     .bulk(bulkRequest, RequestOptions.DEFAULT);
             if (bulkResponse.hasFailures()) {
                 throw new RuntimeException("BulkUpdate exception" + bulkResponse.buildFailureMessage());
+            }
+            else {
+                return bulkResponse.getItems().length;
             }
         } catch (Exception e) {
             log.error(" BulkUpdate exception,index:{},type:{}", index, type, e);

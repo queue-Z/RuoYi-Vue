@@ -2,6 +2,7 @@ package com.ruoyi.unidom.collection.domain;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.unidom.model.IdEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -13,7 +14,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author quezhuhu
  * @date 2023-04-17
  */
-public class UnidomFileData extends BaseEntity
+public class UnidomFileData extends BaseEntity implements IdEntity
 {
     private static final long serialVersionUID = 1L;
 
