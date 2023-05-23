@@ -39,7 +39,7 @@ public class TUdsModuleDefController extends BaseController
     /**
      * 查询模块定义列表
      */
-    @PreAuthorize("@ss.hasPermi('indices:def:list')")
+    //@PreAuthorize("@ss.hasPermi('indices:def:list')")
     @GetMapping("/list")
     public TableDataInfo list(TUdsModuleDef tUdsModuleDef)
     {
@@ -51,7 +51,7 @@ public class TUdsModuleDefController extends BaseController
     /**
      * 导出模块定义列表
      */
-    @PreAuthorize("@ss.hasPermi('indices:def:export')")
+    //@PreAuthorize("@ss.hasPermi('indices:def:export')")
     @Log(title = "模块定义", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, TUdsModuleDef tUdsModuleDef)
@@ -64,7 +64,7 @@ public class TUdsModuleDefController extends BaseController
     /**
      * 获取模块定义详细信息
      */
-    @PreAuthorize("@ss.hasPermi('indices:def:query')")
+    //@PreAuthorize("@ss.hasPermi('indices:def:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -74,7 +74,7 @@ public class TUdsModuleDefController extends BaseController
     /**
      * 新增模块定义
      */
-    @PreAuthorize("@ss.hasPermi('indices:def:add')")
+    //@PreAuthorize("@ss.hasPermi('indices:def:add')")
     @Log(title = "模块定义", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TUdsModuleDef tUdsModuleDef)
@@ -85,7 +85,7 @@ public class TUdsModuleDefController extends BaseController
     /**
      * 修改模块定义
      */
-    @PreAuthorize("@ss.hasPermi('indices:def:edit')")
+    //@PreAuthorize("@ss.hasPermi('indices:def:edit')")
     @Log(title = "模块定义", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TUdsModuleDef tUdsModuleDef)
@@ -96,7 +96,7 @@ public class TUdsModuleDefController extends BaseController
     /**
      * 删除模块定义
      */
-    @PreAuthorize("@ss.hasPermi('indices:def:remove')")
+    //@PreAuthorize("@ss.hasPermi('indices:def:remove')")
     @Log(title = "模块定义", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

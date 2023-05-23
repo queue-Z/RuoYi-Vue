@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ruoyi.unidom.collection.domain.UnidomEventData;
 import com.ruoyi.unidom.common.page.PageResult;
 import com.ruoyi.unidom.common.response.PageResponse;
+import com.ruoyi.unidom.common.util.CollectionUtil;
 import com.ruoyi.unidom.common.util.DocumentPlusService;
 import com.ruoyi.unidom.common.util.StringUtil;
+import com.ruoyi.unidom.esvo.EsSortVO;
 import com.ruoyi.unidom.indices.domain.TUdsModuleDef;
 import com.ruoyi.unidom.indices.service.ITUdsModuleDefService;
 import org.apache.lucene.search.join.ScoreMode;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import com.ruoyi.unidom.common.util.EsUtil;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,27 +47,32 @@ public class FullTextSearchService {
 
         //获取索引名称信息
         List<String> listIndexName=new ArrayList<>();
-        listIndexName.add("unidom_event_data");
-        listIndexName.add("unidom_file_data");
-        listIndexName.add("unidom_people_data");
-        listIndexName.add("unidom_place_data");
-        listIndexName.add("unidom_organization_data");
+        List<TUdsModuleDef> listModuleDef = tUdsModuleDefService.selectTUdsModuleDefList(new TUdsModuleDef());
+        for(TUdsModuleDef moduleDef:listModuleDef){
+            listIndexName.add(moduleDef.getModuleIndiceAlias());
+        }
 
         // PageResult<ObjectNode> pageResult = docSv.search("unidom_event_data", "unidom_event_data", ObjectNode.class, rootQueryBuilder, null, 1, 10, null, null, highlightFields, null);
-        PageResult<ObjectNode> pageResult = docSv.search(listIndexName, listIndexName, ObjectNode.class, rootQueryBuilder, null, 0, 1000, null, null, highlightFields, null);
+        PageResult<ObjectNode> pageResult = docSv.search(listIndexName,null, ObjectNode.class, rootQueryBuilder, null, 0, 10000, null, null, highlightFields, null);
 
         return pageResult;
     }
 
     public PageResult<ObjectNode> pageSearch(String keyword, int pageNum, int pageSize, List<String> filterModuleCodes){
-        //定义返回结果
-        if(pageNum<1){
-            pageNum=1;
+        PageResult<ObjectNode> pageResult = new PageResult();
+        if (pageNum < 1) {
+            pageNum = 1;
+        }
+        //pageSize未传时，默认返回10条
+        if (pageSize < 1) {
+            pageSize = 10;
         }
         //定义查询开始位置
-        int from=(pageNum-1)*pageSize;
+        int from = (pageNum - 1) * pageSize;
+        pageResult.setPageNum(pageNum);
+        pageResult.setPageSize(pageSize);
 
-        //获取索引名称信息
+        //获取索引别名信息
         List<String> listIndexName=new ArrayList<>();
         if(filterModuleCodes!=null && filterModuleCodes.size()>0){
 
@@ -72,14 +80,15 @@ public class FullTextSearchService {
                 TUdsModuleDef moduleDef = tUdsModuleDefService.selectTUdsModuleDefByCode(moduleCode);
                 listIndexName.add(moduleDef.getModuleIndiceAlias());
             }
-        }else {
+        }
+        else {
             List<TUdsModuleDef> listModuleDef = tUdsModuleDefService.selectTUdsModuleDefList(new TUdsModuleDef());
             for(TUdsModuleDef moduleDef:listModuleDef){
-                listIndexName.add(moduleDef.getModuleIndiceName());
+                listIndexName.add(moduleDef.getModuleIndiceAlias());
             }
         }
-//        //获取全文检索的字段列表
-//        List<String> listModuleFields = filterModuleCodes;
+        //获取全文检索的字段列表
+        List<String> listModuleFields = filterModuleCodes;
 
         //根查询条件
         BoolQueryBuilder rootQueryBuilder=QueryBuilders.boolQuery();
@@ -90,13 +99,24 @@ public class FullTextSearchService {
             QueryBuilder multiMatch = new MultiMatchQueryBuilder(keyword, "dataTitle", "dataDesc");
             rootQueryBuilder.must(multiMatch);
         }
+        List<String> highlightFields = new ArrayList<>();
+        highlightFields.add("dataTitle");
+        highlightFields.add("dataDesc");
 
         //拼装排序条件
-        List<SortBuilder> listSortBuilder=new ArrayList<>();
+//        List<SortBuilder> listSortBuilder=new ArrayList<>();
+//        if (!CollectionUtil.isEmpty(listSorts)) {
+//            listSorts.stream().forEach(p -> {
+//                FieldSortBuilder fieldSortBuilder = new FieldSortBuilder(p.getSortField());
+//                fieldSortBuilder.order(p.getSortOrder());
+//                listSortBuilder.add(fieldSortBuilder);
+//            });
+//        }
 
-        PageResult<ObjectNode> result = docSv.search(listIndexName, null, ObjectNode.class, rootQueryBuilder, null, from, pageSize, null, null, null, listSortBuilder);
+        //执行查询
+        pageResult = docSv.search(listIndexName, null, ObjectNode.class, rootQueryBuilder, null, from, pageSize, null, null, highlightFields,null);
 
-        return result;
+        return pageResult;
     }
 
     public ObjectNode moduleDetail(String moduleCode, String esId) {

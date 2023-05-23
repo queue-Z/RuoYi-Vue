@@ -22,10 +22,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="orgAddress"    column="org_address"    />
         <result property="orgId"    column="org_id"    />
         <result property="orgEstablishmentDate"    column="org_establishment_date"    />
+        <result property="orgUrl"    column="org_url"    />
     </resultMap>
 
     <sql id="selectUnidomOrganizationDataVo">
-        select id, module_code, data_title, data_desc, label_keywords, create_time, update_time, es_update_time, org_name, org_type, org_business_scope, org_status, org_staff_size, org_contact_info, org_address, org_id, org_establishment_date from unidom_organization_data
+        select id, module_code, data_title, data_desc, label_keywords, create_time, update_time, es_update_time, org_name, org_type, org_business_scope, org_status, org_staff_size, org_contact_info, org_address, org_id, org_establishment_date, org_url from unidom_organization_data
     </sql>
 
     <select id="selectUnidomOrganizationDataList" parameterType="UnidomOrganizationData" resultMap="UnidomOrganizationDataResult">
@@ -45,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orgAddress != null  and orgAddress != ''"> and org_address = #{orgAddress}</if>
             <if test="orgId != null  and orgId != ''"> and org_id = #{orgId}</if>
             <if test="orgEstablishmentDate != null "> and org_establishment_date = #{orgEstablishmentDate}</if>
+            <if test="orgUrl != null  and orgUrl != ''"> and org_url = #{orgUrl}</if>
         </where>
     </select>
     
@@ -73,6 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orgAddress != null">org_address,</if>
             <if test="orgId != null">org_id,</if>
             <if test="orgEstablishmentDate != null">org_establishment_date,</if>
+            <if test="orgUrl != null">org_url,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
@@ -92,6 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orgAddress != null">#{orgAddress},</if>
             <if test="orgId != null">#{orgId},</if>
             <if test="orgEstablishmentDate != null">#{orgEstablishmentDate},</if>
+            <if test="orgUrl != null">#{orgUrl},</if>
          </trim>
     </insert>
 
@@ -114,6 +118,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orgAddress != null">org_address = #{orgAddress},</if>
             <if test="orgId != null">org_id = #{orgId},</if>
             <if test="orgEstablishmentDate != null">org_establishment_date = #{orgEstablishmentDate},</if>
+            <if test="orgUrl != null">org_url = #{orgUrl},</if>
         </trim>
         where id = #{id}
     </update>

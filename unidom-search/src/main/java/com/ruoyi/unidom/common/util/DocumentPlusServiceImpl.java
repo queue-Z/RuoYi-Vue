@@ -361,8 +361,9 @@ public class DocumentPlusServiceImpl implements DocumentPlusService {
             //处理查询结果
             SearchHits hits = searchResponse.getHits();
             SearchHit[] searchHits = hits.getHits();
-            // long total = hits.getTotalHits();
-            long total = hits.getHits().length;
+            long total = hits.getTotalHits();
+            // 下面这条是命中的条数，等于size，不是total
+            //long total = hits.getHits().length;
             //查询结果为空
             if (searchHits == null || searchHits.length == 0) {
                 return new PageResult(Collections.emptyList(), total);

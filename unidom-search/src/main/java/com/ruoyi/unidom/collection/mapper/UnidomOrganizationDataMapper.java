@@ -7,7 +7,7 @@ import com.ruoyi.unidom.collection.domain.UnidomOrganizationData;
  * 实体-组织Mapper接口
  * 
  * @author quezhuhu
- * @date 2023-04-23
+ * @date 2023-04-24
  */
 public interface UnidomOrganizationDataMapper 
 {

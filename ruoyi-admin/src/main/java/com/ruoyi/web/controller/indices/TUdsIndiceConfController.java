@@ -39,7 +39,7 @@ public class TUdsIndiceConfController extends BaseController
     /**
      * 查询索引配置列表
      */
-    @PreAuthorize("@ss.hasPermi('indices:conf:list')")
+    //@PreAuthorize("@ss.hasPermi('indices:conf:list')")
     @GetMapping("/list")
     public TableDataInfo list(TUdsIndiceConf tUdsIndiceConf)
     {
@@ -51,7 +51,7 @@ public class TUdsIndiceConfController extends BaseController
     /**
      * 导出索引配置列表
      */
-    @PreAuthorize("@ss.hasPermi('indices:conf:export')")
+    //@PreAuthorize("@ss.hasPermi('indices:conf:export')")
     @Log(title = "索引配置", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, TUdsIndiceConf tUdsIndiceConf)
@@ -64,7 +64,7 @@ public class TUdsIndiceConfController extends BaseController
     /**
      * 获取索引配置详细信息
      */
-    @PreAuthorize("@ss.hasPermi('indices:conf:query')")
+    //@PreAuthorize("@ss.hasPermi('indices:conf:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -74,7 +74,7 @@ public class TUdsIndiceConfController extends BaseController
     /**
      * 新增索引配置
      */
-    @PreAuthorize("@ss.hasPermi('indices:conf:add')")
+    //@PreAuthorize("@ss.hasPermi('indices:conf:add')")
     @Log(title = "索引配置", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TUdsIndiceConf tUdsIndiceConf)
@@ -85,7 +85,7 @@ public class TUdsIndiceConfController extends BaseController
     /**
      * 修改索引配置
      */
-    @PreAuthorize("@ss.hasPermi('indices:conf:edit')")
+    //@PreAuthorize("@ss.hasPermi('indices:conf:edit')")
     @Log(title = "索引配置", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TUdsIndiceConf tUdsIndiceConf)
@@ -96,7 +96,7 @@ public class TUdsIndiceConfController extends BaseController
     /**
      * 删除索引配置
      */
-    @PreAuthorize("@ss.hasPermi('indices:conf:remove')")
+    //@PreAuthorize("@ss.hasPermi('indices:conf:remove')")
     @Log(title = "索引配置", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

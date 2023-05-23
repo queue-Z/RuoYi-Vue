@@ -80,6 +80,8 @@ public class UnidomOrganizationData extends BaseEntity implements IdEntity
     @Excel(name = "成立日期")
     private Date orgEstablishmentDate;
 
+    private String orgUrl;
+
     public void setId(String id) 
     {
         this.id = id;
@@ -216,6 +218,14 @@ public class UnidomOrganizationData extends BaseEntity implements IdEntity
         return orgEstablishmentDate;
     }
 
+    public String getOrgUrl() {
+        return orgUrl;
+    }
+
+    public void setOrgUrl(String orgUrl) {
+        this.orgUrl = orgUrl;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -236,6 +246,7 @@ public class UnidomOrganizationData extends BaseEntity implements IdEntity
             .append("orgAddress", getOrgAddress())
             .append("orgId", getOrgId())
             .append("orgEstablishmentDate", getOrgEstablishmentDate())
+            .append("orgUrl", getOrgUrl())
             .toString();
     }
 }

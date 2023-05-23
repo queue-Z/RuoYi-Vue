@@ -12,7 +12,7 @@ import com.ruoyi.unidom.collection.service.IUnidomOrganizationDataService;
  * 实体-组织Service业务层处理
  * 
  * @author quezhuhu
- * @date 2023-04-23
+ * @date 2023-04-24
  */
 @Service
 public class UnidomOrganizationDataServiceImpl implements IUnidomOrganizationDataService 

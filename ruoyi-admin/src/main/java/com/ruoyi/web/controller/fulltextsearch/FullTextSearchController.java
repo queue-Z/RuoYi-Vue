@@ -36,15 +36,6 @@ public class FullTextSearchController {
         return res;
     }
 
-    @GetMapping("/pagesearch")
-    public ResponseContent<PageResult<ObjectNode>> pagesearch(
-            @RequestParam(name = "keyword", required = true) String keyword
-    ) {
-
-        PageResult<ObjectNode> list = fullTextSearchService.fullTextSearch(keyword);
-        ResponseContent res=ResponseContent.success(list);
-        return res;
-    }
 
     @ApiOperation("unidom分页全文检索")
     @PostMapping("/pageSearch")
@@ -56,16 +47,7 @@ public class FullTextSearchController {
         List<String> filterModuleCodes=param.getModuleCodes();
 
         int pageNum=param.getPageNum();
-        if(pageNum<1){
-            pageNum=1;
-        }
-        //查询的最大数量
         int pageSize=param.getPageSize();
-        if(pageSize<0){
-            pageSize=10;
-        }else if(pageSize>esDefaultPageSize){
-            pageSize=esDefaultPageSize;
-        }
         //执行全文检索
         PageResult<ObjectNode> list= fullTextSearchService.pageSearch(keyword,pageNum,pageSize,filterModuleCodes);
         ResponseContent res=ResponseContent.success(list);

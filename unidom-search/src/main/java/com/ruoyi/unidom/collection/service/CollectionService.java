@@ -4,6 +4,7 @@ import com.ruoyi.unidom.collection.domain.*;
 import com.ruoyi.unidom.common.util.DocumentPlusService;
 import com.ruoyi.unidom.indices.domain.TUdsModuleDef;
 import com.ruoyi.unidom.indices.service.ITUdsModuleDefService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
